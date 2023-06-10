@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IProfilesService, ProfilesService>();
 builder.Services.AddAutoMapper(typeof(AuthMappingProfile));
 
 builder.ConfigureJwt();
