@@ -1,6 +1,5 @@
 using Auth.BL;
 using Auth.BL.Services;
-using Auth.Common.Dtos;
 using Auth.Common.Interfaces;
 using Auth.DAL;
 using Common.Configurators;
@@ -15,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProfilesService, ProfilesService>();
+builder.Services.AddScoped<IAuthDbInitializer, AuthDbInitializer>();
 builder.Services.AddAutoMapper(typeof(AuthMappingProfile));
 
 builder.ConfigureJwt();

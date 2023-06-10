@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Builder;
+using Auth.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Auth.DAL;
 
@@ -19,6 +17,9 @@ public static class AuthDALConfigurator
         {
             var dbContext = scope.ServiceProvider.GetService<AuthDbContext>();
             dbContext?.Database.Migrate();
+            
+            var initializer = scope.ServiceProvider.GetRequiredService<IAuthDbInitializer>();
+            initializer.InitAuthDb();
         }
     }
 }
