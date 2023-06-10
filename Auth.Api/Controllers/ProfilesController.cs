@@ -29,4 +29,17 @@ public class ProfilesController : ControllerBase
     {
         return await _profilesService.GetProfileByEmail(email);
     }
+
+    [HttpPut]
+    [Authorize]
+    public async Task<ActionResult<TokenDto>> EditProfile([FromBody] EditProfileDto editProfileDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        var token = await _profilesService.EditProfile(email, editProfileDto);
+        return Ok(token);
+    }
 }
