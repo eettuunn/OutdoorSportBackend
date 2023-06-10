@@ -9,6 +9,4 @@ public class JwtConfig
     public required string Key { get; set; }
     
     public required int AccessMinutesLifeTime { get; set; }
-    
-    public required int RefreshDaysLifeTime { get; set; }
 }

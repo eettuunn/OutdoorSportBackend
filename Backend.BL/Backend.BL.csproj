@@ -21,4 +21,9 @@
       <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.5" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Backend.Common\Backend.Common.csproj" />
+      <ProjectReference Include="..\Backend.DAL\Backend.DAL.csproj" />
+    </ItemGroup>
+
 </Project>

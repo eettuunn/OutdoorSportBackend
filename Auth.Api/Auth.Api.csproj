@@ -24,10 +24,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\Auth.BL\Auth.BL.csproj" />
+      <ProjectReference Include="..\Auth.Common\Auth.Common.csproj" />
       <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 

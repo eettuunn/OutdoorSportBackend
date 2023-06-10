@@ -28,4 +28,9 @@
       <Folder Include="Controllers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Backend.BL\Backend.BL.csproj" />
+      <ProjectReference Include="..\Backend.Common\Backend.Common.csproj" />
+    </ItemGroup>
+
 </Project>
