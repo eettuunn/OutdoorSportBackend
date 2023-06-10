@@ -4,7 +4,9 @@ namespace Auth.Common.Dtos;
 
 public class RegisterDto
 {
-    [Required] public string email { get; set; }
+    [Required]    
+    [RegularExpression(@"[a-zA-Z]+\w*@[a-zA-Z]+\.[a-zA-Z]+", ErrorMessage = "Invalid email address")]
+    public string email { get; set; }
     
     [Required] public string password { get; set; }
     
