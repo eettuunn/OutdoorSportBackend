@@ -56,6 +56,7 @@ public class AuthDbInitializer : IAuthDbInitializer
         if (user != null)
         {
             _userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
+            _userManager.AddToRoleAsync(user, "User").GetAwaiter().GetResult();
             var adminEntity = new AdminEntity
             {
                 Id = new Guid(),
