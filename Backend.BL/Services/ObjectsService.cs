@@ -68,16 +68,36 @@ public class ObjectsService : IObjectsService
             .Include(so => so.User)
             .FirstOrDefaultAsync(so => so.Id == id) 
                        ?? throw new CantFindByIdException("sport object", id);
-        if (sportObj.User.Email != email)
-        {
-            throw new ForbiddenException("You can't edit not your object");
-        }
+        if (sportObj.User.Email != email) throw new ForbiddenException("You can't edit not your object");
 
         sportObj.Type = editObjectDto.type ?? sportObj.Type;
         sportObj.Address = editObjectDto.address ?? sportObj.Address;
         sportObj.XCoordinate = editObjectDto.xCoordinate ?? sportObj.XCoordinate;
         sportObj.YCoordinate = editObjectDto.yCoordinate ?? sportObj.YCoordinate;
         sportObj.Photos = editObjectDto.photos.Count == 0 ? sportObj.Photos : editObjectDto.photos;
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteObject(Guid id, string email)
+    {
+        var sportObject = await _context
+            .SportObjects
+            .Include(so => so.User)
+            .FirstOrDefaultAsync(so => so.Id == id) ?? throw new CantFindByIdException("sport object", id);
+        if (sportObject.User.Email != email) throw new ForbiddenException("You can't delete not your sport object");
+
+        _context.Remove(sportObject);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task AddObjectPhotos(Guid id, List<byte[]> photos)
+    {
+        var sportObject = await _context
+            .SportObjects
+            .FirstOrDefaultAsync(so => so.Id == id) ?? throw new CantFindByIdException("sport object", id);
+
+        sportObject.Photos.AddRange(photos);
 
         await _context.SaveChangesAsync();
     }

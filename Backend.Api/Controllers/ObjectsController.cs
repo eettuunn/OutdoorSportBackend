@@ -56,4 +56,12 @@ public class ObjectsController : ControllerBase
         await _objectsService.EditObject(id, editObjectDto, email);
         return Ok();
     }
+    
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task DeleteObject(Guid id)
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        await _objectsService.DeleteObject(id, email);
+    }
 }

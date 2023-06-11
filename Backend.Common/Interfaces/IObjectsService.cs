@@ -9,4 +9,6 @@ public interface IObjectsService
     public Task<ObjectDto> GetObjectDetails(Guid id);
     public Task CreateObject(CreateObjectDto createObjectDto, string email);
     public Task EditObject(Guid id, EditObjectDto editObjectDto, string email);
+    public Task DeleteObject(Guid id, string email);
+    public Task AddObjectPhotos(Guid id, List<byte[]> photos);
 }
