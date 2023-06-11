@@ -7,4 +7,5 @@ public interface IReviewsService
     public Task LeaveComment(Guid objectId, CreateCommentDto createCommentDto, string email);
     public Task DeleteComment(Guid commentId, string email);
     public Task EditComment(Guid commentId, EditCommentDto editCommentDto, string email);
+    public Task RateSportObject(Guid objectId, int value, string email);
 }

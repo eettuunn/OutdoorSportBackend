@@ -64,4 +64,47 @@ public class ReviewsService : IReviewsService
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task RateSportObject(Guid objectId, int value, string email)
+    {
+        if (value is > 10 or < 1) throw new BadRequestException("Value must be in range from 1 to 10");
+        var sportObj = await _context
+            .SportObjects
+            .Include(so => so.Ratings)
+            .ThenInclude(r => r.User)
+            .FirstOrDefaultAsync(so => so.Id == objectId) ?? throw new CantFindByIdException("sport object", objectId);
+        var user = await _context
+            .Users
+            .FirstOrDefaultAsync(u => u.Email == email);
+        var userRating = sportObj.Ratings.FirstOrDefault(r => r.User == user);
+        
+        if (userRating != null)
+        {
+            sportObj.AverageRating = (double) (sportObj.Ratings.Sum(r => r.Value) - userRating.Value + value) / sportObj.Ratings.Count;
+            userRating.Value = value;
+        }
+        else
+        {
+            if (sportObj.Ratings.Count == 0)
+            {
+                sportObj.AverageRating = value;
+            }
+            else
+            {
+                var sum = sportObj.Ratings.Sum(r => r.Value) + value;
+                var av = (double) sum / (sportObj.Ratings.Count + 1);
+                sportObj.AverageRating = av;
+            }
+            var newRating = new RatingEntity
+            {
+                Id = new Guid(),
+                User = user,
+                SportObject = sportObj,
+                Value = value
+            };
+            await _context.Ratings.AddAsync(newRating);
+        }
+
+        await _context.SaveChangesAsync();
+    }
 }

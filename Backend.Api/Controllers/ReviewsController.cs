@@ -39,4 +39,12 @@ public class ReviewsController : ControllerBase
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         await _reviewsService.EditComment(commentId, editCommentDto, email);
     }
+
+    [HttpPost("{objectId}/rate")]
+    [Authorize]
+    public async Task RateObject(Guid objectId, int value)
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        await _reviewsService.RateSportObject(objectId, value, email);
+    }
 }
