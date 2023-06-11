@@ -64,4 +64,11 @@ public class ObjectsController : ControllerBase
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         await _objectsService.DeleteObject(id, email);
     }
+
+    [HttpPut("{id}/photos")]
+    [Authorize]
+    public async Task AddObjectPhotos(Guid id, [FromForm] List<IFormFile> photos)
+    {
+        await _objectsService.AddObjectPhotos(id, photos);
+    }
 }

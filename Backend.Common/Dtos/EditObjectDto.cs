@@ -11,6 +11,4 @@ public class EditObjectDto
     public double? yCoordinate { get; set; }
     
     public SportType? type { get; set; }
-
-    public List<byte[]> photos { get; set; } = new();
 }

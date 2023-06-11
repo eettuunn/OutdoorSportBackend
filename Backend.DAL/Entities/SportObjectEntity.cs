@@ -18,7 +18,7 @@ public class SportObjectEntity
     
     public SportType? Type { get; set; }
 
-    public List<byte[]> Photos { get; set; } = new();
+    public List<string> Photos { get; set; } = new();
     
     public double? AverageRating { get; set; }
     

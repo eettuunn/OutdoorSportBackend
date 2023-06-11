@@ -5,6 +5,7 @@ using Backend.Common.Interfaces;
 using Backend.DAL;
 using Backend.DAL.Entities;
 using delivery_backend_advanced.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.BL.Services;
@@ -74,7 +75,6 @@ public class ObjectsService : IObjectsService
         sportObj.Address = editObjectDto.address ?? sportObj.Address;
         sportObj.XCoordinate = editObjectDto.xCoordinate ?? sportObj.XCoordinate;
         sportObj.YCoordinate = editObjectDto.yCoordinate ?? sportObj.YCoordinate;
-        sportObj.Photos = editObjectDto.photos.Count == 0 ? sportObj.Photos : editObjectDto.photos;
 
         await _context.SaveChangesAsync();
     }
@@ -91,14 +91,22 @@ public class ObjectsService : IObjectsService
         await _context.SaveChangesAsync();
     }
 
-    public async Task AddObjectPhotos(Guid id, List<byte[]> photos)
+    public async Task AddObjectPhotos(Guid id, List<IFormFile> photos)
     {
         var sportObject = await _context
             .SportObjects
             .FirstOrDefaultAsync(so => so.Id == id) ?? throw new CantFindByIdException("sport object", id);
 
-        sportObject.Photos.AddRange(photos);
-
-        await _context.SaveChangesAsync();
+        foreach (var photo in photos)
+        {
+            using (var ms = new MemoryStream())
+            {
+                await photo.CopyToAsync(ms);
+                var bytes = ms.ToArray();
+                var bytesString = Convert.ToBase64String(bytes);
+                sportObject.Photos.Add(bytesString);
+                await _context.SaveChangesAsync();
+            }   
+        }
     }
 }
