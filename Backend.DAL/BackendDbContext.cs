@@ -12,4 +12,5 @@ public class BackendDbContext : DbContext
     public DbSet<CommentEntity> Comments { get; set; }
     public DbSet<RatingEntity> Ratings { get; set; }
     public DbSet<ReportEntity> Reports { get; set; }
+    public DbSet<SlotEntity> Slots { get; set; }
 }

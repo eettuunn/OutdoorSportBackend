@@ -10,9 +10,6 @@ public class CommentEntity
     public string Text { get; set; }
     
     [Required]
-    public DateTime Time { get; set; }
-    
-    [Required]
     public UserEntity User { get; set; }
     
     [Required]

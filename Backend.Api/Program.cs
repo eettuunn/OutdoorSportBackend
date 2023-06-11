@@ -14,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBackDbInitializer, BackDbInitializer>();
 builder.Services.AddScoped<IObjectsService, ObjectsService>();
+builder.Services.AddScoped<IReviewsService, ReviewsService>();
 builder.Services.AddAutoMapper(typeof(BackMappingProfile));
 
 builder.Services.AddControllers()

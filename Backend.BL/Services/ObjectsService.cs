@@ -37,6 +37,7 @@ public class ObjectsService : IObjectsService
         var sportObj = await _context
             .SportObjects
             .Include(so => so.Comments)
+            .ThenInclude(c => c.User)
             .Include(so => so.User)
             .FirstOrDefaultAsync(so => so.Id == id)
                        ?? throw new CantFindByIdException("sport object", id);
@@ -44,6 +45,10 @@ public class ObjectsService : IObjectsService
         var objectDto = _mapper.Map<ObjectDto>(sportObj);
         objectDto.userEmail = sportObj.User.Email;
         objectDto.comments = _mapper.Map<List<CommentDto>>(sportObj.Comments);
+        for (int i = 0; i < objectDto.comments.Count; i++)
+        {
+            objectDto.comments[i].email = sportObj.Comments[i].User.Email;
+        }
 
         return objectDto;
     }
@@ -93,6 +98,7 @@ public class ObjectsService : IObjectsService
 
     public async Task AddObjectPhotos(Guid id, List<IFormFile> photos)
     {
+        //todo: maybe only for your object
         var sportObject = await _context
             .SportObjects
             .FirstOrDefaultAsync(so => so.Id == id) ?? throw new CantFindByIdException("sport object", id);

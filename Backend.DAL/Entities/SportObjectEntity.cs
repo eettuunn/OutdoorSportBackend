@@ -30,4 +30,6 @@ public class SportObjectEntity
     public List<RatingEntity> Ratings { get; set; } = new();
 
     public List<ReportEntity> Reports { get; set; } = new();
+    
+    public List<SlotEntity> Slots { get; set; } = new();
 }

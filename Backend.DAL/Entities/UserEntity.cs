@@ -19,4 +19,6 @@ public class UserEntity
     public List<ReportEntity> Reports { get; set; } = new();
 
     public List<SportObjectEntity> SportObjects { get; set; } = new();
+    
+    public List<SlotEntity> Slots { get; set; } = new();
 }
