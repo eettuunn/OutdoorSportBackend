@@ -11,14 +11,19 @@ public class SportObjectEntity
     public string Address { get; set; }
     
     [Required]
-    public float XCoordinate { get; set; }
+    public double XCoordinate { get; set; }
     
     [Required]
-    public float YCoordinate { get; set; }
+    public double YCoordinate { get; set; }
     
     public SportType? Type { get; set; }
 
     public List<byte[]> Photos { get; set; } = new();
+    
+    public double? AverageRating { get; set; }
+    
+    [Required]
+    public UserEntity User { get; set; }
 
     public List<CommentEntity> Comments { get; set; } = new();
 

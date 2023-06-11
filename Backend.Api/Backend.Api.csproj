@@ -31,6 +31,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Backend.BL\Backend.BL.csproj" />
       <ProjectReference Include="..\Backend.Common\Backend.Common.csproj" />
+      <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 
 </Project>

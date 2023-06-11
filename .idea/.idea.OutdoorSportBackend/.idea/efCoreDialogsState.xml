@@ -3,6 +3,7 @@
   <component name="EfCoreDialogsState">
     <option name="keyValueStorage">
       <map>
+        <entry key="Common:0c72a32c-ceff-40c5-88fc-b3043b43d40a:dbContext" value="Backend.DAL.BackendDbContext" />
         <entry key="Common:aa6f3a6d-e72a-4d08-bacb-e9a409f03c72:dbContext" value="Auth.DAL.AuthDbContext" />
         <entry key="Common:buildConfiguration" value="Debug" />
         <entry key="Common:noBuild" value="false" />
