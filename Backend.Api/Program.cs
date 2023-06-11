@@ -33,6 +33,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionMiddleware();
 
+app.UseCreatingUsersMiddleware();
+
 app.ConfigureBackendDAL();
 
 app.UseHttpsRedirection();
