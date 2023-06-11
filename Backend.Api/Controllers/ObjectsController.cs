@@ -20,4 +20,10 @@ public class ObjectsController : ControllerBase
     {
         return await _objectsService.GetObjectsList(type);
     }
+    
+    [HttpGet("{id}")]
+    public async Task<ObjectDto> GetObjectDetails(Guid id)
+    {
+        return await _objectsService.GetObjectDetails(id);
+    }
 }

@@ -10,5 +10,6 @@ public class BackMappingProfile : Profile
     {
         CreateMap<SportObjectEntity, ObjectListDto>();
         CreateMap<SportObjectEntity, ObjectDto>();
+        CreateMap<CommentEntity, CommentDto>();
     }
 }

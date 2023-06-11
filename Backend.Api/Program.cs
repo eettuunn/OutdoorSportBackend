@@ -3,6 +3,7 @@ using Backend.BL;
 using Backend.BL.Services;
 using Backend.Common.Interfaces;
 using Common.Configurators;
+using delivery_backend_advanced.Services.ExceptionHandler;
 using OutdoorSportBackend.Configurators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionMiddleware();
 
 app.ConfigureBackendDAL();
 

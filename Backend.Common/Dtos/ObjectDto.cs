@@ -17,4 +17,8 @@ public class ObjectDto
     public List<byte[]> photos { get; set; } = new();
     
     public double? averageRating { get; set; }
+    
+    public string userEmail { get; set; }
+    
+    public List<CommentDto> comments { get; set; }
 }
