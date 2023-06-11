@@ -42,7 +42,7 @@ public class BackDbInitializer : IBackDbInitializer
         {
             UserName = adminConfig.UserName,
             Email = adminConfig.Email,
-            Id = new Guid()
+            Id = Guid.Parse(adminConfig.Id)
         };
         _context.Users.Add(admin);
 

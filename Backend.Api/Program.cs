@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using Backend.BL;
 using Backend.BL.Services;
 using Backend.Common.Interfaces;
 using Common.Configurators;
@@ -10,6 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBackDbInitializer, BackDbInitializer>();
+builder.Services.AddScoped<IObjectsService, ObjectsService>();
+builder.Services.AddAutoMapper(typeof(BackMappingProfile));
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 
 builder.ConfigureBackendDAL();
 

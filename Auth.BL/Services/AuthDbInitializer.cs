@@ -47,6 +47,7 @@ public class AuthDbInitializer : IAuthDbInitializer
         {
             UserName = adminConfig.UserName,
             Email = adminConfig.Email,
+            Id = adminConfig.Id,
             EmailConfirmed = true
         };
         _userManager.CreateAsync(admin, adminConfig.Password).GetAwaiter().GetResult();
