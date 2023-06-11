@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using Backend.Common.Dtos;
 using Backend.Common.Enums;
 using Backend.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OutdoorSportBackend.Controllers;
@@ -25,5 +27,19 @@ public class ObjectsController : ControllerBase
     public async Task<ObjectDto> GetObjectDetails(Guid id)
     {
         return await _objectsService.GetObjectDetails(id);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> CreateObject([FromBody] CreateObjectDto createObjectDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        await _objectsService.CreateObject(createObjectDto, email);
+        return Ok();
     }
 }

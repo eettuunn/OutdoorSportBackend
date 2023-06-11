@@ -3,6 +3,7 @@ using Backend.Common.Dtos;
 using Backend.Common.Enums;
 using Backend.Common.Interfaces;
 using Backend.DAL;
+using Backend.DAL.Entities;
 using delivery_backend_advanced.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,5 +45,19 @@ public class ObjectsService : IObjectsService
         objectDto.comments = _mapper.Map<List<CommentDto>>(sportObj.Comments);
 
         return objectDto;
+    }
+
+    public async Task CreateObject(CreateObjectDto createObjectDto, string email)
+    {
+        var newObject = _mapper.Map<SportObjectEntity>(createObjectDto);
+        var user = await _context
+            .Users
+            .FirstOrDefaultAsync(u => u.Email == email) 
+                   ?? throw new NotFoundException($"Can't find user with email {email}");
+
+        newObject.User = user;
+
+        await _context.SportObjects.AddAsync(newObject);
+        await _context.SaveChangesAsync();
     }
 }
