@@ -42,4 +42,18 @@ public class ObjectsController : ControllerBase
         await _objectsService.CreateObject(createObjectDto, email);
         return Ok();
     }
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<IActionResult> EditObject([FromBody] EditObjectDto editObjectDto, Guid id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        await _objectsService.EditObject(id, editObjectDto, email);
+        return Ok();
+    }
 }

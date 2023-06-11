@@ -60,4 +60,25 @@ public class ObjectsService : IObjectsService
         await _context.SportObjects.AddAsync(newObject);
         await _context.SaveChangesAsync();
     }
+
+    public async Task EditObject(Guid id, EditObjectDto editObjectDto, string email)
+    {
+        var sportObj = await _context
+            .SportObjects
+            .Include(so => so.User)
+            .FirstOrDefaultAsync(so => so.Id == id) 
+                       ?? throw new CantFindByIdException("sport object", id);
+        if (sportObj.User.Email != email)
+        {
+            throw new ForbiddenException("You can't edit not your object");
+        }
+
+        sportObj.Type = editObjectDto.type ?? sportObj.Type;
+        sportObj.Address = editObjectDto.address ?? sportObj.Address;
+        sportObj.XCoordinate = editObjectDto.xCoordinate ?? sportObj.XCoordinate;
+        sportObj.YCoordinate = editObjectDto.yCoordinate ?? sportObj.YCoordinate;
+        sportObj.Photos = editObjectDto.photos.Count == 0 ? sportObj.Photos : editObjectDto.photos;
+
+        await _context.SaveChangesAsync();
+    }
 }
