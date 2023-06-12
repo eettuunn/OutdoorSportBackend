@@ -3,7 +3,10 @@ using Auth.BL.Services;
 using Auth.Common.Interfaces;
 using Auth.DAL;
 using Common.Configurators;
+using Common.Configurators.ConfigClasses;
 using delivery_backend_advanced.Services.ExceptionHandler;
+using Microsoft.AspNetCore.SignalR;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,17 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProfilesService, ProfilesService>();
 builder.Services.AddScoped<IAuthDbInitializer, AuthDbInitializer>();
 builder.Services.AddAutoMapper(typeof(AuthMappingProfile));
+
+var rabbitMqConnection = builder.Configuration.GetSection("RabbitMqConnection").Get<RabbitMqConnection>();
+builder.Services.AddSingleton<IConnection>(x =>
+    new ConnectionFactory
+    {
+        HostName = rabbitMqConnection.Hostname,
+        UserName = rabbitMqConnection.Username,
+        Password = rabbitMqConnection.Password,
+        VirtualHost = rabbitMqConnection.VirtualHost
+    }.CreateConnection()
+);
 
 builder.ConfigureJwt();
 

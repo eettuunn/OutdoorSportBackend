@@ -11,10 +11,12 @@ namespace Backend.BL.Services;
 public class ReviewsService : IReviewsService
 {
     private readonly BackendDbContext _context;
+    private readonly IMessageProducer _messageProducer;
 
-    public ReviewsService(BackendDbContext context)
+    public ReviewsService(BackendDbContext context, IMessageProducer messageProducer)
     {
         _context = context;
+        _messageProducer = messageProducer;
     }
     
     public async Task LeaveComment(Guid objectId, CreateCommentDto createCommentDto, string email)
@@ -134,7 +136,7 @@ public class ReviewsService : IReviewsService
                 User = sportObj.User
             };
             
-            //todo: add ban user, when there are more than 3 reports, with rabbit -_-
+            _messageProducer.SendMessage(sportObj.User.Email);
 
             await _context.Reports.AddAsync(newReport);
             await _context.SaveChangesAsync();

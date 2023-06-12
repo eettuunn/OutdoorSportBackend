@@ -4,8 +4,10 @@ using Backend.BL.Services;
 using Backend.Common.Interfaces;
 using Backend.DAL.Migrations;
 using Common.Configurators;
+using Common.Configurators.ConfigClasses;
 using delivery_backend_advanced.Services.ExceptionHandler;
 using OutdoorSportBackend.Configurators;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,18 @@ builder.Services.AddScoped<IObjectsService, ObjectsService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
 builder.Services.AddScoped<ISlotsService, SlotsService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+
+builder.Services.AddScoped<IMessageProducer, MessageProducer>();
+var rabbitMqConnection = builder.Configuration.GetSection("RabbitMqConnection").Get<RabbitMqConnection>();
+builder.Services.AddSingleton<IConnection>(x =>
+    new ConnectionFactory
+    {
+        HostName = rabbitMqConnection.Hostname,
+        UserName = rabbitMqConnection.Username,
+        Password = rabbitMqConnection.Password,
+        VirtualHost = rabbitMqConnection.VirtualHost
+    }.CreateConnection()
+);
 builder.Services.AddAutoMapper(typeof(BackMappingProfile));
 
 builder.Services.AddControllers()
