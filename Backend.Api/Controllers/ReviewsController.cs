@@ -18,10 +18,13 @@ public class ReviewsController : ControllerBase
     }
 
     [HttpPost("{objectId}")]
-    public async Task LeaveComment(Guid objectId, [FromBody] CreateCommentDto createCommentDto)
+    public async Task<IActionResult> LeaveComment(Guid objectId, [FromBody] CreateCommentDto createCommentDto)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         await _reviewsService.LeaveComment(objectId, createCommentDto, email);
+        return Ok();
     }
     
     [HttpDelete("{commentId}")]
@@ -32,10 +35,13 @@ public class ReviewsController : ControllerBase
     }
     
     [HttpPut("{commentId}")]
-    public async Task EditComment(Guid commentId, [FromBody] EditCommentDto editCommentDto)
+    public async Task<IActionResult> EditComment(Guid commentId, [FromBody] EditCommentDto editCommentDto)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         await _reviewsService.EditComment(commentId, editCommentDto, email);
+        return Ok();
     }
 
     [HttpPost("{objectId}/rate")]

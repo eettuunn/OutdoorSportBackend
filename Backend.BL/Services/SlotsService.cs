@@ -38,4 +38,19 @@ public class SlotsService : ISlotsService
         await _context.Slots.AddAsync(newSlot);
         await _context.SaveChangesAsync();
     }
+
+    public async Task EditSlot(Guid slotId, EditSlotDto editSlotDto, string email)
+    {
+        if (DateTime.UtcNow >= editSlotDto.time)
+            throw new BadRequestException("Time must be greater, than current date time");
+        
+        var slot = await _context
+            .Slots
+            .FirstOrDefaultAsync(so => so.Id == slotId) ?? throw new CantFindByIdException("slot", slotId);
+
+        slot.Text = editSlotDto.text ?? slot.Text;
+        slot.Time = editSlotDto.time ?? slot.Time;
+
+        await _context.SaveChangesAsync();
+    }
 }

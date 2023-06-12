@@ -18,9 +18,22 @@ public class SlotsController : ControllerBase
     }
 
     [HttpPost("{objectId}")]
-    public async Task SignSlot(Guid objectId, [FromBody] SignSlotDto signSlotDto)
+    public async Task<IActionResult> SignSlot(Guid objectId, [FromBody] SignSlotDto signSlotDto)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         await _slotsService.SignSlot(objectId, signSlotDto, email);
+        return Ok();
+    }
+    
+    [HttpPut("{slotId}")]
+    public async Task<IActionResult> EditSlot(Guid slotId, [FromBody] EditSlotDto editSlotDto)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        await _slotsService.EditSlot(slotId, editSlotDto, email);
+        return Ok();
     }
 }
