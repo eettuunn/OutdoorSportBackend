@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace OutdoorSportBackend.Controllers;
 
 [Route("api/back/reviews")]
+[Authorize]
 public class ReviewsController : ControllerBase
 {
     private readonly IReviewsService _reviewsService;
@@ -17,7 +18,6 @@ public class ReviewsController : ControllerBase
     }
 
     [HttpPost("{objectId}")]
-    [Authorize]
     public async Task LeaveComment(Guid objectId, [FromBody] CreateCommentDto createCommentDto)
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
@@ -25,7 +25,6 @@ public class ReviewsController : ControllerBase
     }
     
     [HttpDelete("{commentId}")]
-    [Authorize]
     public async Task DeleteComment(Guid commentId)
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
@@ -33,7 +32,6 @@ public class ReviewsController : ControllerBase
     }
     
     [HttpPut("{commentId}")]
-    [Authorize]
     public async Task EditComment(Guid commentId, [FromBody] EditCommentDto editCommentDto)
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
@@ -41,7 +39,6 @@ public class ReviewsController : ControllerBase
     }
 
     [HttpPost("{objectId}/rate")]
-    [Authorize]
     public async Task RateObject(Guid objectId, int value)
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
@@ -49,7 +46,6 @@ public class ReviewsController : ControllerBase
     }
 
     [HttpGet("{objectId}/report")]
-    [Authorize]
     public async Task<bool> CheckReportAbility(Guid objectId)
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
@@ -57,7 +53,6 @@ public class ReviewsController : ControllerBase
     }
     
     [HttpPost("{objectId}/report")]
-    [Authorize]
     public async Task ReportObject(Guid objectId)
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;

@@ -11,12 +11,10 @@ namespace Backend.BL.Services;
 public class ReviewsService : IReviewsService
 {
     private readonly BackendDbContext _context;
-    private readonly IMapper _mapper;
 
-    public ReviewsService(BackendDbContext context, IMapper mapper)
+    public ReviewsService(BackendDbContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
     
     public async Task LeaveComment(Guid objectId, CreateCommentDto createCommentDto, string email)

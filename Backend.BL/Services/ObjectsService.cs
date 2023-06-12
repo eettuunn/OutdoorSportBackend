@@ -39,6 +39,7 @@ public class ObjectsService : IObjectsService
             .Include(so => so.Comments)
             .ThenInclude(c => c.User)
             .Include(so => so.User)
+            .Include(so => so.Slots)
             .FirstOrDefaultAsync(so => so.Id == id)
                        ?? throw new CantFindByIdException("sport object", id);
 

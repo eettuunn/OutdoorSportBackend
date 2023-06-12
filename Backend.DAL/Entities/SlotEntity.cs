@@ -13,4 +13,7 @@ public class SlotEntity
     
     [Required]
     public UserEntity User { get; set; }
+    
+    [Required]
+    public SportObjectEntity SportObject { get; set; }
 }
