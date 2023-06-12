@@ -27,4 +27,10 @@ public class AdminController : ControllerBase
     {
         await _adminService.DeleteSlot(slotId);
     }
+    
+    [HttpDelete("comment/delete/{commentId}")]
+    public async Task DeleteComment(Guid commentId)
+    {
+        await _adminService.DeleteComment(commentId);
+    }
 }

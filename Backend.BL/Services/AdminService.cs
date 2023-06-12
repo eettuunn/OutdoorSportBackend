@@ -36,7 +36,12 @@ public class AdminService : IAdminService
 
     public async Task DeleteComment(Guid commentId)
     {
-        throw new NotImplementedException();
+        var comment = await _context
+            .Comments
+            .FirstOrDefaultAsync(c => c.Id == commentId) ?? throw new CantFindByIdException("comment", commentId);
+
+        _context.Comments.Remove(comment);
+        await _context.SaveChangesAsync();
     }
 
     public async Task BanUser(string email)
