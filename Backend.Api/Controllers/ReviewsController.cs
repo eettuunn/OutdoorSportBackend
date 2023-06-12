@@ -55,4 +55,12 @@ public class ReviewsController : ControllerBase
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         return await _reviewsService.CheckReportAbility(objectId, email);
     }
+    
+    [HttpPost("{objectId}/report")]
+    [Authorize]
+    public async Task ReportObject(Guid objectId)
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        await _reviewsService.ReportObject(objectId, email);
+    }
 }

@@ -123,6 +123,27 @@ public class ReviewsService : IReviewsService
 
     public async Task ReportObject(Guid objectId, string email)
     {
-        throw new NotImplementedException();
+        if (await CheckReportAbility(objectId, email))
+        {
+            var sportObj = await _context
+                .SportObjects
+                .Include(so => so.User)
+                .FirstOrDefaultAsync(so => so.Id == objectId) ?? throw new CantFindByIdException("sport object", objectId);
+            var newReport = new ReportEntity
+            {
+                Id = new Guid(),
+                SportObject = sportObj,
+                User = sportObj.User
+            };
+            
+            //todo: add ban user, when there are more than 3 reports, with rabbit -_-
+
+            await _context.Reports.AddAsync(newReport);
+            await _context.SaveChangesAsync();
+        }
+        else
+        {
+            throw new ConflictException("You can't report this sport object");
+        }
     }
 }
