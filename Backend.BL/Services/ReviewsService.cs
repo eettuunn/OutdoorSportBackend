@@ -107,4 +107,22 @@ public class ReviewsService : IReviewsService
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task<bool> CheckReportAbility(Guid objectId, string email)
+    {
+        var sportObj = await _context
+            .SportObjects
+            .Include(so => so.User)
+            .FirstOrDefaultAsync(so => so.Id == objectId) ?? throw new CantFindByIdException("sport object", objectId);
+        var report = await _context
+            .Reports
+            .FirstOrDefaultAsync(r => r.User == sportObj.User && r.SportObject == sportObj);
+        
+        return report == null;
+    }
+
+    public async Task ReportObject(Guid objectId, string email)
+    {
+        throw new NotImplementedException();
+    }
 }
