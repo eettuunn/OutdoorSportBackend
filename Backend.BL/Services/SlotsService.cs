@@ -46,11 +46,25 @@ public class SlotsService : ISlotsService
         
         var slot = await _context
             .Slots
+            .Include(s => s.User)
             .FirstOrDefaultAsync(so => so.Id == slotId) ?? throw new CantFindByIdException("slot", slotId);
+        if (slot.User.Email != email) throw new ForbiddenException("You can't edit not your slot");
 
         slot.Text = editSlotDto.text ?? slot.Text;
         slot.Time = editSlotDto.time ?? slot.Time;
 
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteSlot(Guid slotId, string email)
+    {
+        var slot = await _context
+            .Slots
+            .Include(s => s.User)
+            .FirstOrDefaultAsync(so => so.Id == slotId) ?? throw new CantFindByIdException("slot", slotId);
+        if (slot.User.Email != email) throw new ForbiddenException("You can't edit not your slot");
+
+        _context.Slots.Remove(slot);
         await _context.SaveChangesAsync();
     }
 }

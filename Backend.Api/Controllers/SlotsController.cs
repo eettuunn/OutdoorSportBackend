@@ -36,4 +36,11 @@ public class SlotsController : ControllerBase
         await _slotsService.EditSlot(slotId, editSlotDto, email);
         return Ok();
     }
+    
+    [HttpDelete("{slotId}")]
+    public async Task DeleteSlot(Guid slotId)
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        await _slotsService.DeleteSlot(slotId, email);
+    }
 }

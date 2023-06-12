@@ -50,7 +50,9 @@ public class ObjectsService : IObjectsService
         {
             objectDto.comments[i].email = sportObj.Comments[i].User.Email;
         }
-
+        objectDto.slots = objectDto.slots.OrderBy(s => s.time).ToList();
+        //todo: background job for deleting past slots
+        
         return objectDto;
     }
 
