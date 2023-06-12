@@ -5,7 +5,10 @@ using Backend.Common.Interfaces;
 using Backend.DAL.Migrations;
 using Common.Configurators;
 using Common.Configurators.ConfigClasses;
+using Common.Policies.Ban;
 using delivery_backend_advanced.Services.ExceptionHandler;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using OutdoorSportBackend.Configurators;
 using RabbitMQ.Client;
 
@@ -33,6 +36,9 @@ builder.Services.AddSingleton<IConnection>(x =>
     }.CreateConnection()
 );
 builder.Services.AddAutoMapper(typeof(BackMappingProfile));
+
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IAuthorizationHandler, BanPolicyHandler>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });

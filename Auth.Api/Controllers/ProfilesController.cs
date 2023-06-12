@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Auth.Common.Dtos;
 using Auth.Common.Interfaces;
+using Common.Policies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ public class ProfilesController : ControllerBase
 
     [HttpGet]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task<ProfileDto> GetProfile()
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
@@ -32,6 +34,7 @@ public class ProfilesController : ControllerBase
 
     [HttpPut]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task<ActionResult<TokenDto>> EditProfile([FromBody] EditProfileDto editProfileDto)
     {
         if (!ModelState.IsValid)

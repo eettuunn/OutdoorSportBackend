@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Backend.Common.Dtos;
 using Backend.Common.Interfaces;
+using Common.Policies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace OutdoorSportBackend.Controllers;
 
 [Route("api/back/reviews")]
 [Authorize]
+[Authorize(Policy = PolicyNames.Ban)]
 public class ReviewsController : ControllerBase
 {
     private readonly IReviewsService _reviewsService;

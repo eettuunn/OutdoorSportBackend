@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Backend.Common.Dtos;
 using Backend.Common.Enums;
 using Backend.Common.Interfaces;
+using Common.Policies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,7 @@ public class ObjectsController : ControllerBase
 
     [HttpPost]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task<IActionResult> CreateObject([FromBody] CreateObjectDto createObjectDto)
     {
         if (!ModelState.IsValid)
@@ -45,6 +47,7 @@ public class ObjectsController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task<IActionResult> EditObject([FromBody] EditObjectDto editObjectDto, Guid id)
     {
         if (!ModelState.IsValid)
@@ -59,6 +62,7 @@ public class ObjectsController : ControllerBase
     
     [HttpDelete("{id}")]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task DeleteObject(Guid id)
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
@@ -67,6 +71,7 @@ public class ObjectsController : ControllerBase
 
     [HttpPut("{id}/photos")]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task AddObjectPhotos(Guid id, [FromForm] List<IFormFile> photos)
     {
         await _objectsService.AddObjectPhotos(id, photos);

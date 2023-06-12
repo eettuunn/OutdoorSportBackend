@@ -1,5 +1,6 @@
 using System.Text;
 using Common.Configurators.ConfigClasses;
+using Common.Policies.Ban;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,9 @@ public static class JwtConfigurator
                         (JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser()
                     .Build();
+            options.AddPolicy(
+                "Ban",
+                policy => policy.Requirements.Add(new BanPolicy()));
         });
     }
 }

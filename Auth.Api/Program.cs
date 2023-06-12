@@ -4,8 +4,11 @@ using Auth.Common.Interfaces;
 using Auth.DAL;
 using Common.Configurators;
 using Common.Configurators.ConfigClasses;
+using Common.Policies.Ban;
 using delivery_backend_advanced.Services.ExceptionHandler;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +34,9 @@ builder.Services.AddSingleton<IConnection>(x =>
         VirtualHost = rabbitMqConnection.VirtualHost
     }.CreateConnection()
 );
+
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IAuthorizationHandler, BanPolicyHandler>();
 
 builder.ConfigureJwt();
 
