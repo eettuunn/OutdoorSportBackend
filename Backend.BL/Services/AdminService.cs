@@ -26,7 +26,12 @@ public class AdminService : IAdminService
 
     public async Task DeleteSlot(Guid slotId)
     {
-        throw new NotImplementedException();
+        var slot = await _context
+            .Slots
+            .FirstOrDefaultAsync(s => s.Id == slotId) ?? throw new CantFindByIdException("slot", slotId);
+
+        _context.Slots.Remove(slot);
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteComment(Guid commentId)

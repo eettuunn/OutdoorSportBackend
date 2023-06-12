@@ -16,9 +16,15 @@ public class AdminController : ControllerBase
         _adminService = adminService;
     }
 
-    [HttpDelete("{objectId}")]
+    [HttpDelete("object/delete/{objectId}")]
     public async Task DeleteObject(Guid objectId)
     {
         await _adminService.DeleteSportObject(objectId);
+    }
+    
+    [HttpDelete("slot/delete/{slotId}")]
+    public async Task DeleteSlot(Guid slotId)
+    {
+        await _adminService.DeleteSlot(slotId);
     }
 }
