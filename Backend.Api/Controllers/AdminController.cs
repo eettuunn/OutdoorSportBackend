@@ -33,4 +33,16 @@ public class AdminController : ControllerBase
     {
         await _adminService.DeleteComment(commentId);
     }
+
+    [HttpPut("ban/{email}")]
+    public async Task BanUser(string email)
+    {
+        await _adminService.BanUser(email);
+    }
+    
+    [HttpPut("unban/{email}")]
+    public async Task UnbanUser(string email)
+    {
+        await _adminService.UnbanUser(email);
+    }
 }

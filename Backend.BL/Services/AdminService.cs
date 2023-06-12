@@ -1,3 +1,4 @@
+using Backend.Common.Dtos;
 using Backend.Common.Interfaces;
 using Backend.DAL;
 using delivery_backend_advanced.Exceptions;
@@ -8,10 +9,12 @@ namespace Backend.BL.Services;
 public class AdminService : IAdminService
 {
     private readonly BackendDbContext _context;
+    private readonly IMessageProducer _messageProducer;
 
-    public AdminService(BackendDbContext context)
+    public AdminService(BackendDbContext context, IMessageProducer messageProducer)
     {
         _context = context;
+        _messageProducer = messageProducer;
     }
 
     public async Task DeleteSportObject(Guid objectId)
@@ -46,11 +49,23 @@ public class AdminService : IAdminService
 
     public async Task BanUser(string email)
     {
-        throw new NotImplementedException();
+        var ban = new BanUserModel
+        {
+            email = email,
+            ban = true
+        };
+
+        _messageProducer.SendMessage(ban);
     }
 
     public async Task UnbanUser(string email)
     {
-        throw new NotImplementedException();
+        var unban = new BanUserModel
+        {
+            email = email,
+            ban = false
+        };
+
+        _messageProducer.SendMessage(unban);
     }
 }
