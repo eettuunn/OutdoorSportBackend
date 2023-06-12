@@ -62,7 +62,7 @@ public class SlotsService : ISlotsService
             .Slots
             .Include(s => s.User)
             .FirstOrDefaultAsync(so => so.Id == slotId) ?? throw new CantFindByIdException("slot", slotId);
-        if (slot.User.Email != email) throw new ForbiddenException("You can't edit not your slot");
+        if (slot.User.Email != email) throw new ForbiddenException("You can't delete not your slot");
 
         _context.Slots.Remove(slot);
         await _context.SaveChangesAsync();

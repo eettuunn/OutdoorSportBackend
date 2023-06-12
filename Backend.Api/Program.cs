@@ -17,6 +17,7 @@ builder.Services.AddScoped<IBackDbInitializer, BackDbInitializer>();
 builder.Services.AddScoped<IObjectsService, ObjectsService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
 builder.Services.AddScoped<ISlotsService, SlotsService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddAutoMapper(typeof(BackMappingProfile));
 
 builder.Services.AddControllers()
