@@ -116,7 +116,8 @@ public class ReviewsService : IReviewsService
             .FirstOrDefaultAsync(so => so.Id == objectId) ?? throw new CantFindByIdException("sport object", objectId);
         var report = await _context
             .Reports
-            .FirstOrDefaultAsync(r => r.User == sportObj.User && r.SportObject == sportObj);
+            .Include(r => r.User)
+            .FirstOrDefaultAsync(r => r.User.Email == email && r.SportObject == sportObj);
         
         return report == null;
     }
@@ -135,15 +136,29 @@ public class ReviewsService : IReviewsService
                 SportObject = sportObj,
                 User = sportObj.User
             };
-            
-            _messageProducer.SendMessage(sportObj.User.Email);
 
             await _context.Reports.AddAsync(newReport);
             await _context.SaveChangesAsync();
+            await SendBanIfNeeded(sportObj.User.Email);
         }
         else
         {
             throw new ConflictException("You can't report this sport object");
         }
     }
+
+
+
+    private async Task SendBanIfNeeded(string email)
+    {
+        if (await _context.Reports.CountAsync(r => r.User.Email == email) >= 3)
+        {
+            var ban = new BanUserModel
+            {
+                email = email,
+                ban = true
+            };
+            _messageProducer.SendMessage(ban);   
+        }
+    } 
 }

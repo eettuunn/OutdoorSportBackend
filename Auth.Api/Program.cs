@@ -19,6 +19,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProfilesService, ProfilesService>();
 builder.Services.AddScoped<IAuthDbInitializer, AuthDbInitializer>();
 builder.Services.AddAutoMapper(typeof(AuthMappingProfile));
+builder.Services.AddHostedService<RabbitMqListener>();
 
 var rabbitMqConnection = builder.Configuration.GetSection("RabbitMqConnection").Get<RabbitMqConnection>();
 builder.Services.AddSingleton<IConnection>(x =>
