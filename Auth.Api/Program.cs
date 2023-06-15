@@ -29,6 +29,7 @@ builder.Services.AddSingleton<IConnection>(x =>
     new ConnectionFactory
     {
         HostName = rabbitMqConnection.Hostname,
+        Port = int.Parse(rabbitMqConnection.Port),
         UserName = rabbitMqConnection.Username,
         Password = rabbitMqConnection.Password,
         VirtualHost = rabbitMqConnection.VirtualHost
