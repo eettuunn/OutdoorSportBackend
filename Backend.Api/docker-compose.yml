@@ -1,11 +1,65 @@
 ﻿version: '3.8'
-services: 
-  rabbitmq: 
+
+networks:
+  outdoor-dev:
+    driver: bridge
+
+services:
+  outdoor_back:
+    container_name: "outdoor_back"
+#    image: eebbuunn/outdoor_back:latest
+    depends_on:
+      - "postgres_image"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8085:80"
+    environment:
+      DB_CONNECTION_STRING: "host=postgres_image;port=5432;database=outdoor_back_db;username=danil;password=danil"
+    networks:
+      - outdoor-dev
+
+  outdoor_auth:
+    container_name: "outdoor_auth"
+#    image: eebbuunn/outdoor_auth:latest
+    depends_on:
+      - "postgres_image"
+    build:
+      context: .
+      dockerfile: ../Auth.Api/Dockerfile
+    ports:
+      - "8086:80"
+    environment:
+      DB_CONNECTION_STRING: "host=postgres_image;port=5432;database=outdoor_auth_db;username=danil;password=danil"
+    networks:
+      - outdoor-dev
+
+  postgres_image:
+    image: postgres:latest
+    ports:
+      - "5432"
+    restart: always
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "danil"
+      POSTGRES_PASSWORD: "danil"
+    networks:
+      - outdoor-dev
+  
+  rabbitmq:
     container_name: "rabbitmq"
     image: rabbitmq:3.8-management-alpine
+    hostname: "rabbitmq"
     environment:
       - RABBITMQ_DEFAULT_USER=user
       - RABBITMQ_DEFAULT_PASS=1234
+      - RABBITMQ_DEFAULT_SERVER=92.255.79.135
+      - RABBITMQ_DEFAULT_VHOST=/
     ports:
       - '5672:5672'
       - '15672:15672'
+
+volumes:
+  db_volume:

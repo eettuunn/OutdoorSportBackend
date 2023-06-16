@@ -1,0 +1,35 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.8"
+services:
+  outdoor_auth:
+    build:
+      context: "D:\\prog\\web\\OutdoorSport\\OutdoorSportBackend\\Backend.Api"
+      dockerfile: "../Auth.Api/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/Auth.Api.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    image: "auth.api:dev"
+    ports: []
+    volumes:
+    - "D:\\prog\\web\\OutdoorSport\\OutdoorSportBackend\\Auth.Api:/app:rw"
+    working_dir: "/app"
+  outdoor_back:
+    build:
+      context: "D:\\prog\\web\\OutdoorSport\\OutdoorSportBackend\\Backend.Api"
+      dockerfile: "Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/Backend.Api.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    image: "backend.api:dev"
+    ports: []
+    volumes:
+    - "D:\\prog\\web\\OutdoorSport\\OutdoorSportBackend\\Backend.Api:/app:rw"
+    working_dir: "/app"

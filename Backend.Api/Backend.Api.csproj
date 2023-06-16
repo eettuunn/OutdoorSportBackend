@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>OutdoorSportBackend</RootNamespace>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
         <UserSecretsId>6051285a-e383-4cf3-bb3a-d6de419c9ef0</UserSecretsId>
     </PropertyGroup>
 

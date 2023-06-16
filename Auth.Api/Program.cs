@@ -29,10 +29,15 @@ builder.Services.AddSingleton<IConnection>(x =>
     new ConnectionFactory
     {
         HostName = rabbitMqConnection.Hostname,
-        Port = int.Parse(rabbitMqConnection.Port),
         UserName = rabbitMqConnection.Username,
         Password = rabbitMqConnection.Password,
-        VirtualHost = rabbitMqConnection.VirtualHost
+        VirtualHost = rabbitMqConnection.VirtualHost,
+        Port = int.Parse(rabbitMqConnection.Port),
+        Ssl =
+        {
+            ServerName = rabbitMqConnection.Hostname,
+            Enabled = false
+        }
     }.CreateConnection()
 );
 
