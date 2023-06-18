@@ -38,7 +38,6 @@ services:
     image: eebbuunn/outdoor_back:latest
     build:
       context: .
-      dockerfile: Dockerfile
     ports:
       - "5287:80"
     environment:
@@ -51,21 +50,24 @@ services:
     depends_on:
       - "postgres_image"
       - "rabbitmq"
-#
-#  outdoor_auth:
-#    container_name: outdoor_auth
-#    image: eebbuunn/outdoor_auth:latest
-#    depends_on:
-#      - "postgres_image"
-#      - "rabbitmq"
-#    build:
-#      context: .
-#    ports:
-#      - "8086:80"
-#    environment:
-#      ConnectionStrings__PostgresBackend: "host=postgres_image;port=5432;database=outdoor_auth_db;username=danil;password=danil"
-#    networks:
-#      - outdoor-dev
+
+  outdoor_auth:
+    container_name: outdoor_auth
+    image: eebbuunn/outdoor_auth:latest
+    build:
+      context: .
+    ports:
+      - "8086:80"
+    environment:
+      ConnectionStrings__PostgresBackend: "host=postgres_image;port=5432;database=outdoor_auth_db;username=danil;password=danil"
+    restart: on-failure
+    volumes:
+      - ./.aspnet/outdoor_back/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+    networks:
+      - outdoor-dev
+    depends_on:
+      - "postgres_image"
+      - "rabbitmq"
 
 volumes:
   db_volume:

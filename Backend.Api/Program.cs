@@ -14,6 +14,16 @@ using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .WithOrigins("http://localhost:63343");
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -32,7 +42,13 @@ builder.Services.AddSingleton<IConnection>(x =>
         HostName = rabbitMqConnection.Hostname,
         UserName = rabbitMqConnection.Username,
         Password = rabbitMqConnection.Password,
-        VirtualHost = rabbitMqConnection.VirtualHost
+        VirtualHost = rabbitMqConnection.VirtualHost,
+        Port = int.Parse(rabbitMqConnection.Port),
+        Ssl =
+        {
+            ServerName = rabbitMqConnection.Hostname,
+            Enabled = false
+        }
     }.CreateConnection()
 );
 builder.Services.AddAutoMapper(typeof(BackMappingProfile));
@@ -56,6 +72,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionMiddleware();
+
+app.UseCors();
 
 app.UseCreatingUsersMiddleware();
 

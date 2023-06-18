@@ -4,6 +4,8 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>692209dc-d719-4ff6-865d-a909562c5ef7</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,6 +29,12 @@
       <ProjectReference Include="..\Auth.BL\Auth.BL.csproj" />
       <ProjectReference Include="..\Auth.Common\Auth.Common.csproj" />
       <ProjectReference Include="..\Common\Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

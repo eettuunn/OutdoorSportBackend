@@ -13,6 +13,17 @@ using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .WithOrigins("http://localhost:63343");
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,7 +33,6 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProfilesService, ProfilesService>();
 builder.Services.AddScoped<IAuthDbInitializer, AuthDbInitializer>();
 builder.Services.AddAutoMapper(typeof(AuthMappingProfile));
-builder.Services.AddHostedService<RabbitMqListener>();
 
 var rabbitMqConnection = builder.Configuration.GetSection("RabbitMqConnection").Get<RabbitMqConnection>();
 builder.Services.AddSingleton<IConnection>(x =>
@@ -31,10 +41,17 @@ builder.Services.AddSingleton<IConnection>(x =>
         HostName = rabbitMqConnection.Hostname,
         UserName = rabbitMqConnection.Username,
         Password = rabbitMqConnection.Password,
-        VirtualHost = rabbitMqConnection.VirtualHost
+        VirtualHost = rabbitMqConnection.VirtualHost,
+        Port = int.Parse(rabbitMqConnection.Port),
+        Ssl =
+        {
+            ServerName = rabbitMqConnection.Hostname,
+            Enabled = false
+        }
     }.CreateConnection()
 );
 
+builder.Services.AddHostedService<RabbitMqListener>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IAuthorizationHandler, BanPolicyHandler>();
 
@@ -54,6 +71,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ConfigureAuthDAL();
+
+app.UseCors();
 
 app.UseExceptionMiddleware();
 
