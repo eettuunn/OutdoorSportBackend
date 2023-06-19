@@ -52,6 +52,9 @@ public class ProfilesService : IProfilesService
         user.UserName = editProfileDto.userName ?? user.UserName;
         user.Email = editProfileDto.email ?? user.Email;
         user.PhoneNumber = editProfileDto.phoneNumber ?? user.PhoneNumber;
+        user.Myself = editProfileDto.myself ?? user.Myself;
+        user.Contacts = editProfileDto.contacts.Count == 0 ? user.Contacts : editProfileDto.contacts;
+        user.Sports = editProfileDto.sports.Count == 0 ? user.Sports : editProfileDto.sports;
 
         await _userManager.UpdateAsync(user);
         

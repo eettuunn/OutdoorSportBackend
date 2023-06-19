@@ -1,5 +1,6 @@
 using Auth.Common.Interfaces;
 using Auth.DAL.Entities;
+using Backend.Common.Enums;
 using Common.Configurators.ConfigClasses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,10 @@ public class AuthDbInitializer : IAuthDbInitializer
             UserName = adminConfig.UserName,
             Email = adminConfig.Email,
             Id = adminConfig.Id,
-            EmailConfirmed = true
+            EmailConfirmed = true,
+            Myself = "I am admin",
+            Contacts = new() {"Mail: admin@gmail.com", "Tg: @admin"},
+            Sports = new() { SportsType.Basketball , SportsType.Gym}
         };
         _userManager.CreateAsync(admin, adminConfig.Password).GetAwaiter().GetResult();
 
