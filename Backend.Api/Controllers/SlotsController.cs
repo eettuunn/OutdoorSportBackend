@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace OutdoorSportBackend.Controllers;
 
 [Route("api/back/slots")]
-[Authorize]
-[Authorize(Policy = PolicyNames.Ban)]
 public class SlotsController : ControllerBase
 {
     private readonly ISlotsService _slotsService;
@@ -20,6 +18,8 @@ public class SlotsController : ControllerBase
     }
 
     [HttpPost("{objectId}")]
+    [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task<IActionResult> SignSlot(Guid objectId, [FromBody] SignSlotDto signSlotDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -30,6 +30,8 @@ public class SlotsController : ControllerBase
     }
     
     [HttpPut("{slotId}")]
+    [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task<IActionResult> EditSlot(Guid slotId, [FromBody] EditSlotDto editSlotDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -40,9 +42,20 @@ public class SlotsController : ControllerBase
     }
     
     [HttpDelete("{slotId}")]
+    [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task DeleteSlot(Guid slotId)
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         await _slotsService.DeleteSlot(slotId, email);
+    }
+
+    [HttpGet]
+    [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
+    public async Task<List<SlotDto>> GetMySlots()
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        return await _slotsService.GetMySlots(email);
     }
 }

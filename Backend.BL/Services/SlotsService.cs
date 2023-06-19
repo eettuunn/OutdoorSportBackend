@@ -67,4 +67,16 @@ public class SlotsService : ISlotsService
         _context.Slots.Remove(slot);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<SlotDto>> GetMySlots(string email)
+    {
+        var slots = await _context
+            .Slots
+            .Include(s => s.User)
+            .Where(s => s.User.Email == email)
+            .ToListAsync();
+
+        var slotDtos = _mapper.Map<List<SlotDto>>(slots);
+        return slotDtos;
+    }
 }
