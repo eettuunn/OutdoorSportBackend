@@ -68,7 +68,7 @@ public class SlotsService : ISlotsService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<SlotDto>> GetMySlots(string email)
+    public async Task<List<SlotDto>> GetSlotList(string email)
     {
         var slots = await _context
             .Slots

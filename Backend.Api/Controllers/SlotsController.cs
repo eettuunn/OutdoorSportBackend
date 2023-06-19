@@ -56,6 +56,12 @@ public class SlotsController : ControllerBase
     public async Task<List<SlotDto>> GetMySlots()
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-        return await _slotsService.GetMySlots(email);
+        return await _slotsService.GetSlotList(email);
+    }
+    
+    [HttpGet("{email}")]
+    public async Task<List<SlotDto>> GetUsersSlots(string email)
+    {
+        return await _slotsService.GetSlotList(email);
     }
 }
