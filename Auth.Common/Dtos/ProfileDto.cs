@@ -15,4 +15,6 @@ public class ProfileDto
     public List<string> contacts { get; set; } = new();
     
     public string? myself { get; set; }
+    
+    public bool isBanned { get; set; }
 }

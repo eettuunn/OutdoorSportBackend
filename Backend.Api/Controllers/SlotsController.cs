@@ -53,14 +53,14 @@ public class SlotsController : ControllerBase
     [HttpGet]
     [Authorize]
     [Authorize(Policy = PolicyNames.Ban)]
-    public async Task<List<SlotDto>> GetMySlots()
+    public async Task<List<UserSlotDto>> GetMySlots()
     {
         var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         return await _slotsService.GetSlotList(email);
     }
     
     [HttpGet("{email}")]
-    public async Task<List<SlotDto>> GetUsersSlots(string email)
+    public async Task<List<UserSlotDto>> GetUsersSlots(string email)
     {
         return await _slotsService.GetSlotList(email);
     }

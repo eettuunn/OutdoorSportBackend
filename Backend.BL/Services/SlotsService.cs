@@ -68,15 +68,21 @@ public class SlotsService : ISlotsService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<SlotDto>> GetSlotList(string email)
+    public async Task<List<UserSlotDto>> GetSlotList(string email)
     {
         var slots = await _context
             .Slots
             .Include(s => s.User)
+            .Include(s => s.SportObject)
             .Where(s => s.User.Email == email)
             .ToListAsync();
 
-        var slotDtos = _mapper.Map<List<SlotDto>>(slots);
+        var slotDtos = _mapper.Map<List<UserSlotDto>>(slots);
+        for (int i = 0; i < slotDtos.Count; i++)
+        {
+            slotDtos[i].address = slots[i].SportObject.Address;
+            slotDtos[i].type = slots[i].SportObject.Type;
+        }
         return slotDtos;
     }
 }

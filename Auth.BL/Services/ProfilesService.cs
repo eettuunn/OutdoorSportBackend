@@ -41,6 +41,7 @@ public class ProfilesService : IProfilesService
         if (user == null) throw new NotFoundException($"Can't find user with email {email}");
 
         var profileDto = _mapper.Map<ProfileDto>(user);
+        profileDto.isBanned = user.IsBanned;
         return profileDto;
     }
 

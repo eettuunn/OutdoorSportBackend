@@ -117,6 +117,7 @@ public class ReviewsService : IReviewsService
         var report = await _context
             .Reports
             .Include(r => r.User)
+            .Include(r => r.SportObject)
             .FirstOrDefaultAsync(r => r.User.Email == email && r.SportObject == sportObj);
         
         return report == null;
@@ -130,11 +131,14 @@ public class ReviewsService : IReviewsService
                 .SportObjects
                 .Include(so => so.User)
                 .FirstOrDefaultAsync(so => so.Id == objectId) ?? throw new CantFindByIdException("sport object", objectId);
+            var user = await _context
+                .Users
+                .FirstOrDefaultAsync(u => u.Email == email);
             var newReport = new ReportEntity
             {
                 Id = new Guid(),
                 SportObject = sportObj,
-                User = sportObj.User
+                User = user
             };
 
             await _context.Reports.AddAsync(newReport);

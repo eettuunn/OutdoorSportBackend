@@ -23,6 +23,13 @@ builder.Services.AddCors(options =>
             .AllowCredentials()
             .WithOrigins("http://localhost:63343");
     });
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .WithOrigins("http://localhost:63342");
+    });
 });
 
 builder.Services.AddControllers();

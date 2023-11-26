@@ -40,6 +40,7 @@ public class ObjectsService : IObjectsService
             .ThenInclude(c => c.User)
             .Include(so => so.User)
             .Include(so => so.Slots)
+            .ThenInclude(s => s.User)
             .FirstOrDefaultAsync(so => so.Id == id)
                        ?? throw new CantFindByIdException("sport object", id);
 
@@ -51,6 +52,10 @@ public class ObjectsService : IObjectsService
             objectDto.comments[i].email = sportObj.Comments[i].User.Email;
         }
         objectDto.slots = objectDto.slots.OrderBy(s => s.time).ToList();
+        for (int i = 0; i < objectDto.slots.Count; i++)
+        {
+            objectDto.slots[i].userEmail = sportObj.Slots[i].User.Email;
+        }
         //todo: background job for deleting past slots
         
         return objectDto;
